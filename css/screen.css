@@ -434,7 +434,7 @@ body #header form#api_selector .input input {
 }
 
 body #header form#api_selector .input input#input_baseUrl {
-    width: 400px;
+    display: none;
 }
 
 body #header form#api_selector .input input#input_apiKey {
