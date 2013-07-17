@@ -1497,7 +1497,7 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
     };
 
     OperationView.prototype.submitOperation = function(e) {
-      var bodyParam, error_free, form, headerParams, invocationUrl, isFileUpload, map, o, obj, param, paramContentTypeField, responseContentTypeField, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2,
+      var bodyParam, error_free, form, headerParams, invocationUrl, invocationUrlParser, isFileUpload, map, o, obj, param, paramContentTypeField, responseContentTypeField, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2,
         _this = this;
       if (e != null) {
         e.preventDefault();
@@ -1552,10 +1552,13 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
           }
         }
         log("bodyParam = " + bodyParam);
-        headerParams = null;
         invocationUrl = this.model.urlify(map, true);
         log('submitting ' + invocationUrl);
         $(".request_url", $(this.el)).html("<pre>" + invocationUrl + "</pre>");
+        invocationUrlParser = document.createElement('a');
+        invocationUrlParser.href = invocationUrl;
+        headerParams = {"CrossDomain": invocationUrlParser.host};
+        invocationUrl = invocationUrl.replace(headerParams["CrossDomain"], "localhost:8000");
         $(".response_throbber", $(this.el)).show();
         obj = {
           type: this.model.httpMethod,
