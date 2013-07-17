@@ -1553,7 +1553,7 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
         }
         log("bodyParam = " + bodyParam);
         headerParams = null;
-        invocationUrl = this.model.supportHeaderParams() ? (headerParams = this.model.getHeaderParams(map), this.model.urlify(map, false)) : this.model.urlify(map, true);
+        invocationUrl = this.model.urlify(map, true);
         log('submitting ' + invocationUrl);
         $(".request_url", $(this.el)).html("<pre>" + invocationUrl + "</pre>");
         $(".response_throbber", $(this.el)).show();
