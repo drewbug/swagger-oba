@@ -10,8 +10,14 @@ map '/proxy' do
 
     headers = Rack::Utils::HeaderHash.new
     env.each do |key, value|
-      if key =~ /HTTP_(.*)/ && key != 'HTTP_CROSSDOMAIN'
-        headers[$1] = value
+      case key
+      when 'HTTP_CROSSDOMAIN'
+      when 'HTTP_HOST'
+        headers['HTTP_HOST'] = env['HTTP_CROSSDOMAIN']
+      else
+        if key =~ /HTTP_(.*)/
+          headers[$1] = value
+        end
       end
     end
 
