@@ -36,6 +36,9 @@ map '/proxy' do
       http.request(req)
     end
  
-    [res.code, Rack::Utils::HeaderHash.new(res.to_hash), [res.body]]
+    rack_res_headers = Rack::Utils::HeaderHash.new(res.to_hash)
+    rack_res_headers.delete("content-length")
+ 
+    [res.code, rack_res_headers, [res.body]]
   }
 end
