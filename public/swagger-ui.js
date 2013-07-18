@@ -1558,7 +1558,7 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
         invocationUrlParser = document.createElement('a');
         invocationUrlParser.href = invocationUrl;
         headerParams = {"CrossDomain": invocationUrlParser.host};
-        invocationUrl = invocationUrl.replace(headerParams["CrossDomain"], "localhost:8000/proxy"); 
+        invocationUrl = invocationUrl.replace(headerParams["CrossDomain"], location.host+"/proxy"); 
         $(".response_throbber", $(this.el)).show();
         obj = {
           type: this.model.httpMethod,
