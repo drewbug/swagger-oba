@@ -1,44 +1,40 @@
-require 'net/http'
-
 map '/' do
   run Rack::Directory.new "public"
 end
 
 map '/proxy' do
   run lambda { |env|
-    rackreq = Rack::Request.new(env)
+    crossdomain = env['HTTP_CROSSDOMAIN']
 
-    headers = Rack::Utils::HeaderHash.new
-    env.each do |key, value|
-      case key
-      when 'HTTP_CROSSDOMAIN'
-      when 'HTTP_HOST'
-        headers['HTTP_HOST'] = env['HTTP_CROSSDOMAIN']
-      else
-        if key =~ /HTTP_(.*)/
-          headers[$1] = value
-        end
-      end
+    request_line = "#{ env['REQUEST_METHOD'] } #{ env['REQUEST_PATH'].sub(/\A\/proxy\/?/, '/') } #{ env['HTTP_VERSION'] }\r\n"
+
+    headers = env.reject{|x| x[0..4] != 'HTTP_'}
+    headers.delete('HTTP_VERSION')
+    headers.delete('HTTP_CROSSDOMAIN')
+    raw_headers = headers.map do |k, v|
+      "#{k.sub(/\AHTTP_/, '')}: #{v}\r\n"
+    end.join
+
+    body = env['rack.input'].read(env['CONTENT_LENGTH'].to_i)
+
+    request_string = request_line
+    request_string += raw_headers
+    request_string += "\r\n"
+    request_string += body
+
+    env['rack.hijack'].call
+    begin
+      res_socket = env['rack.hijack_io']
+      req_socket = TCPSocket.new(crossdomain.split(':')[0], crossdomain.split(':')[1] || 80)
+
+      req_socket.write(request_string)
+      req_socket.close_write
+
+      res_socket.write(req_socket.read)
+    ensure
+      req_socket.close
+      res_socket.close
     end
-
-    res = Net::HTTP.start(env['HTTP_CROSSDOMAIN']) do |http|
-      m = rackreq.request_method
-      case m
-      when "GET"
-        req = Net::HTTP.const_get(m.capitalize).new(rackreq.fullpath.sub(/\A\/proxy/, ''), headers)
-      when "PUT", "POST"
-        req = Net::HTTP.const_get(m.capitalize).new(rackreq.fullpath.sub(/\A\/proxy/, ''), headers)
-        req.body_stream = rackreq.body
-      else
-        raise "method not supported: #{m}"
-      end
-
-      http.request(req)
-    end
- 
-    rack_res_headers = Rack::Utils::HeaderHash.new(res.to_hash)
-    rack_res_headers.delete("content-length")
- 
-    [res.code, rack_res_headers, [res.body]]
+    return [203, [], []]
   }
 end
