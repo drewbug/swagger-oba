@@ -1,5 +1,16 @@
 map '/' do
-  run Rack::Directory.new "public"
+  use Rack::Static, 
+    :urls => ["/images", "/js", "/css"],
+    :root => "public",
+    :index => 'index.html'
+
+  run Rack::File.new("public")
+end
+
+map '/index.html' do
+  run lambda { |env|
+    [302, {'Location' => '/'}, []]
+  }
 end
 
 map '/proxy' do
