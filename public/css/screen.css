@@ -433,7 +433,7 @@ body #header form#api_selector .input input {
     margin: 0;
 }
 
-body #header form#api_selector .input input#input_baseUrl {
+body #header form#api_selector .input select#input_obaServer {
     width: 400px;
 }
 

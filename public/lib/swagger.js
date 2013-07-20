@@ -5,7 +5,7 @@
 
   SwaggerApi = (function() {
 
-    SwaggerApi.prototype.discoveryUrl = "http://api.wordnik.com/v4/resources.json";
+    SwaggerApi.prototype.discoveryUrl = location.protocol+"//"+location.host+"/api-docs.json";
 
     SwaggerApi.prototype.debug = false;
 
@@ -17,8 +17,8 @@
       if (options == null) {
         options = {};
       }
-      if (options.discoveryUrl != null) {
-        this.discoveryUrl = options.discoveryUrl;
+      if (options.obaServer != null) {
+        this.obaServer = options.obaServer;
       }
       if (options.debug != null) {
         this.debug = options.debug;
@@ -41,7 +41,7 @@
       this.progress = options.progress != null ? options.progress : function() {};
       this.headers = options.headers != null ? options.headers : {};
       this.booleanValues = options.booleanValues != null ? options.booleanValues : new Array('true', 'false');
-      this.discoveryUrl = this.suffixApiKey(this.discoveryUrl);
+      this.discoveryUrl = this.suffixObaServer(this.discoveryUrl);
       if (options.success != null) {
         this.build();
       }
@@ -147,11 +147,11 @@
       return _results;
     };
 
-    SwaggerApi.prototype.suffixApiKey = function(url) {
+    SwaggerApi.prototype.suffixObaServer = function(url) {
       var sep;
-      if ((this.api_key != null) && jQuery.trim(this.api_key).length > 0 && (url != null)) {
+      if ((this.obaServer != null) && jQuery.trim(this.obaServer).length > 0 && (url != null)) {
         sep = url.indexOf('?') > 0 ? '&' : '?';
-        return url + sep + this.apiKeyName + '=' + this.api_key;
+        return url + sep + 'obaServer' + '=' + this.obaServer;
       } else {
         return url;
       }
@@ -205,7 +205,7 @@
         if (this.path == null) {
           this.api.fail("SwaggerResources must have a path.");
         }
-        this.url = this.api.suffixApiKey(this.api.basePath + this.path.replace('{format}', 'json'));
+        this.url = this.api.suffixObaServer(this.api.basePath + this.path.replace('{format}', 'json'));
         this.api.progress('fetching resource ' + this.name + ': ' + this.url);
         jQuery.getJSON(this.url, function(response) {
           var endpoint, _i, _len, _ref;

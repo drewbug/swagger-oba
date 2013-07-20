@@ -39,34 +39,6 @@
             color: #cc0000;
         }
     </style>
-
-    <script type="text/javascript">
-        $(function () {
-            window.swaggerUi = new SwaggerUi({
-                discoveryUrl:location.protocol+"//"+location.host+"/api-docs.json",
-                apiKey:"special-key",
-                dom_id:"swagger-ui-container",
-                supportedSubmitMethods: ['get', 'post', 'put'],
-                onComplete: function(swaggerApi, swaggerUi){
-                	if(console) {
-                        console.log("Loaded SwaggerUI")
-                        console.log(swaggerApi);
-                        console.log(swaggerUi);
-                    }
-                },
-                onFailure: function(data) {
-                	if(console) {
-                        console.log("Unable to Load SwaggerUI");
-                        console.log(data);
-                    }
-                },
-                docExpansion: "none"
-            });
-
-            window.swaggerUi.load();
-        });
-
-    </script>
 </head>
 
 <body>
@@ -75,14 +47,7 @@
         <a id="logo" href="http://swagger.wordnik.com">swagger</a>
 
         <form id='api_selector'>
-            <div class='input icon-btn'>
-                <img id="show-pet-store-icon" src="images/pet_store_api.png" title="Show Swagger Petstore Example Apis">
-            </div>
-            <div class='input icon-btn'>
-                <img id="show-wordnik-dev-icon" src="images/wordnik_api.png" title="Show Wordnik Developer Apis">
-            </div>
-            <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl"
-                                      type="text"/></div>
+            <div class='input'><select id="input_obaServer" name="obaServer"></select></div>
             <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
             <div class='input'><a id="explore" href="#">Explore</a></div>
         </form>
@@ -96,6 +61,42 @@
 <div id="swagger-ui-container" class="swagger-ui-wrap">
 
 </div>
+
+<script type="text/javascript">
+  function input_obaServer(json){
+    $.each(json.feed.entry,function(index, value){
+      if (value['gsx$active']['$t'] == 'TRUE'){
+        $("#input_obaServer").append('<option>'+value['gsx$regionname']['$t']+'</option>');
+      }
+    });
+    $(function () {
+        window.swaggerUi = new SwaggerUi({
+            obaServer: $("#input_obaServer").val(),
+            apiKey:"special-key",
+            dom_id:"swagger-ui-container",
+            supportedSubmitMethods: ['get', 'post', 'put'],
+            onComplete: function(swaggerApi, swaggerUi){
+            	if(console) {
+                    console.log("Loaded SwaggerUI")
+                    console.log(swaggerApi);
+                    console.log(swaggerUi);
+                }
+            },
+            onFailure: function(data) {
+            	if(console) {
+                    console.log("Unable to Load SwaggerUI");
+                    console.log(data);
+                }
+            },
+            docExpansion: "none"
+        });
+
+        window.swaggerUi.load();
+    });
+  }
+</script>
+
+<script src="http://spreadsheets.google.com/feeds/list/0AvybitaYFhhOdGpkNWEyY29ldjBtOHZ6UkVXcm9weEE/od6/public/values?alt=json-in-script&amp;callback=input_obaServer"></script>
 
 </body>
 

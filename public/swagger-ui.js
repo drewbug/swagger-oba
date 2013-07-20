@@ -1208,7 +1208,7 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
     };
 
     SwaggerUi.prototype.updateSwaggerUi = function(data) {
-      this.options.discoveryUrl = data.discoveryUrl;
+      this.options.obaServer = data.obaServer;
       this.options.apiKey = data.apiKey;
       return this.load();
     };
@@ -1218,7 +1218,7 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
       if ((_ref = this.mainView) != null) {
         _ref.clear();
       }
-      this.headerView.update(this.options.discoveryUrl, this.options.apiKey);
+      this.headerView.update(this.options.obaServer, this.options.apiKey);
       return this.api = new SwaggerApi(this.options);
     };
 
@@ -1283,28 +1283,12 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
     }
 
     HeaderView.prototype.events = {
-      'click #show-pet-store-icon': 'showPetStore',
-      'click #show-wordnik-dev-icon': 'showWordnikDev',
       'click #explore': 'showCustom',
-      'keyup #input_baseUrl': 'showCustomOnKeyup',
-      'keyup #input_apiKey': 'showCustomOnKeyup'
+      'keyup #input_apiKey': 'showCustomOnKeyup',
+      'change #input_obaServer': 'showCustom'
     };
 
     HeaderView.prototype.initialize = function() {};
-
-    HeaderView.prototype.showPetStore = function(e) {
-      return this.trigger('update-swagger-ui', {
-        discoveryUrl: "http://petstore.swagger.wordnik.com/api/api-docs.json",
-        apiKey: "special-key"
-      });
-    };
-
-    HeaderView.prototype.showWordnikDev = function(e) {
-      return this.trigger('update-swagger-ui', {
-        discoveryUrl: "http://api.wordnik.com/v4/resources.json",
-        apiKey: ""
-      });
-    };
 
     HeaderView.prototype.showCustomOnKeyup = function(e) {
       if (e.keyCode === 13) {
@@ -1317,20 +1301,20 @@ templates['status_code'] = template(function (Handlebars,depth0,helpers,partials
         e.preventDefault();
       }
       return this.trigger('update-swagger-ui', {
-        discoveryUrl: $('#input_baseUrl').val(),
+        obaServer: $('#input_obaServer').val(),
         apiKey: $('#input_apiKey').val()
       });
     };
 
-    HeaderView.prototype.update = function(url, apiKey, trigger) {
+    HeaderView.prototype.update = function(obaServer, apiKey, trigger) {
       if (trigger == null) {
         trigger = false;
       }
-      $('#input_baseUrl').val(url);
+      $('#input_obaServer').val(obaServer);
       $('#input_apiKey').val(apiKey);
       if (trigger) {
         return this.trigger('update-swagger-ui', {
-          discoveryUrl: url,
+          obaServer: obaServer,
           apiKey: apiKey
         });
       }
