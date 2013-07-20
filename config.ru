@@ -1,3 +1,36 @@
+require 'json'
+require 'open-uri'
+
+class String
+  def to_bool
+    case self
+    when 'TRUE'
+      return true
+    when 'FALSE'
+      return false
+    else
+      return nil
+    end
+  end
+end
+
+module OBADirectory
+  def self.retrieve
+    url = 'http://spreadsheets.google.com/feeds/list/0AvybitaYFhhOdGpkNWEyY29ldjBtOHZ6UkVXcm9weEE/od6/public/values?alt=json'
+    json = JSON.parse(open(url).read)['feed']['entry']
+
+    return json.map do |server|
+      { regionname: server["gsx$regionname"]["$t"],
+        active: server["gsx$active"]["$t"].to_bool,
+        obabaseurl: server["gsx$obabaseurl"]["$t"],
+        siribaseurl: server["gsx$active"]["$t"],
+        supportsobadiscoveryapis: server["gsx$supportsobadiscoveryapis"]["$t"].to_bool,
+        supportsobarealtimeapis: server["gsx$supportsobarealtimeapis"]["$t"].to_bool,
+        supportssirirealtimeapis: server["gsx$supportssirirealtimeapis"]["$t"].to_bool}
+    end
+  end
+end
+
 map '/' do
   use Rack::Static, 
     :urls => ["/images", "/js", "/css"],
@@ -5,6 +38,65 @@ map '/' do
     :index => 'index.html'
 
   run Rack::File.new("public")
+end
+
+map '/api-docs.json' do
+  run lambda { |env|
+    static = {"swaggerVersion" => "1.1"}
+
+    oba_server_name = Rack::Request.new(env).params['obaServer']
+    oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
+
+    resources = {"apis" => []}
+    resources["apis"] << {"path" => "/api-docs/obadiscovery"} if oba_server[:supportsobadiscoveryapis]
+    resources["apis"] << {"path" => "/api-docs/obarealtime"} if oba_server[:supportsobarealtimeapis]
+    resources["apis"] << {"path" => "/api-docs/sirirealtime"} if oba_server[:supportssirirealtimeapis]
+
+    output = static.merge(resources)
+    [200, {'Content-Type' => 'application/json'}, [output.to_json]]
+  }
+end
+
+map '/api-docs/obadiscovery' do
+  run lambda { |env|
+    file = JSON.parse File.read('api-docs/obadiscovery')
+
+    oba_server_name = Rack::Request.new(env).params['obaServer']
+    oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
+
+    basepath = {"basePath" => "#{ oba_server[:obabaseurl] }where"}
+
+    output = file.merge(basepath)
+    [200, {'Content-Type' => 'application/json'}, [output.to_json]]
+  }
+end
+
+map '/api-docs/obarealtime' do
+  run lambda { |env|
+    file = JSON.parse File.read('api-docs/obarealtime')
+
+    oba_server_name = Rack::Request.new(env).params['obaServer']
+    oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
+
+    basepath = {"basePath" => "#{ oba_server[:obabaseurl] }where"}
+
+    output = file.merge(basepath)
+    [200, {'Content-Type' => 'application/json'}, [output.to_json]]
+  }
+end
+
+map '/api-docs/sirirealtime' do
+  run lambda { |env|
+    file = JSON.parse File.read('api-docs/sirirealtime')
+
+    oba_server_name = Rack::Request.new(env).params['obaServer']
+    oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
+
+    basepath = {"basePath" => "#{ oba_server[:siribaseurl] }siri"}
+
+    output = file.merge(basepath)
+    [200, {'Content-Type' => 'application/json'}, [output.to_json]]
+  }
 end
 
 map '/index.html' do

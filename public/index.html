@@ -72,7 +72,8 @@
     $(function () {
         window.swaggerUi = new SwaggerUi({
             obaServer: $("#input_obaServer").val(),
-            apiKey:"special-key",
+            apiKeyName: "key",
+            apiKey:"TEST",
             dom_id:"swagger-ui-container",
             supportedSubmitMethods: ['get', 'post', 'put'],
             onComplete: function(swaggerApi, swaggerUi){
