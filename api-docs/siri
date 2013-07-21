@@ -86,6 +86,91 @@
           ]
         }
       ]
+    },
+    {
+      "path":"/stop-monitoring.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns information about the vehicles serving a particular stop",
+          "notes":"As much as possible, the values used both in the request and the response correspond to the values in the GTFS data",
+          "nickname":"StopMonitoring",
+          "parameters":[
+            {
+              "name":"OperatorRef",
+              "description":"The GTFS agency ID to be monitored",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"MonitoringRef",
+              "description":"The GTFS stop ID of the stop to be monitored",
+              "paramType":"query",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"LineRef",
+              "description":"A filter by GTFS route ID",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"DirectionRef",
+              "description":"A filter by GTFS direction ID",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "allowableValues":{
+                "values":[0,1],
+                "valueType":"LIST"
+              },
+              "dataType":"int"
+            },
+            {
+              "name":"StopMonitoringDetailLevel",
+              "description":"Determines whether or not the response will include the stops each vehicle is going to make after it serves the selected stop",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "allowableValues":{
+                "values":["normal","calls"],
+                "valueType":"LIST"
+              },
+              "dataType":"string"
+            },
+            {
+              "name":"MaximumNumberOfCallsOnwards",
+              "description":"Limit on the number of OnwardCall elements for each vehicle when VehicleMonitoringDetailLevel=calls",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"int"
+            },
+            {
+              "name":"MaximumStopVisits",
+              "description":"An upper bound on the number of buses to return in the results",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"int"
+            },
+            {
+              "name":"MinimumStopVisitsPerLine",
+              "description":"A lower bound on the number of buses to return in the results per line/route (assuming that many are available)",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"int"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
