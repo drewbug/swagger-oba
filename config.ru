@@ -23,7 +23,7 @@ module OBADirectory
       { regionname: server["gsx$regionname"]["$t"],
         active: server["gsx$active"]["$t"].to_bool,
         obabaseurl: server["gsx$obabaseurl"]["$t"],
-        siribaseurl: server["gsx$active"]["$t"],
+        siribaseurl: server["gsx$siribaseurl"]["$t"],
         supportsobadiscoveryapis: server["gsx$supportsobadiscoveryapis"]["$t"].to_bool,
         supportsobarealtimeapis: server["gsx$supportsobarealtimeapis"]["$t"].to_bool,
         supportssirirealtimeapis: server["gsx$supportssirirealtimeapis"]["$t"].to_bool}
