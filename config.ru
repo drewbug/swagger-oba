@@ -50,7 +50,7 @@ map '/api-docs.json' do
     resources = {"apis" => []}
     resources["apis"] << {"path" => "/api-docs/obadiscovery"} if oba_server[:supportsobadiscoveryapis]
     resources["apis"] << {"path" => "/api-docs/obarealtime"} if oba_server[:supportsobarealtimeapis]
-    resources["apis"] << {"path" => "/api-docs/sirirealtime"} if oba_server[:supportssirirealtimeapis]
+    resources["apis"] << {"path" => "/api-docs/siri"} if oba_server[:supportssirirealtimeapis]
 
     output = static.merge(resources)
     [200, {'Content-Type' => 'application/json'}, [output.to_json]]
@@ -85,9 +85,9 @@ map '/api-docs/obarealtime' do
   }
 end
 
-map '/api-docs/sirirealtime' do
+map '/api-docs/siri' do
   run lambda { |env|
-    file = JSON.parse File.read('api-docs/sirirealtime')
+    file = JSON.parse File.read('api-docs/siri')
 
     oba_server_name = Rack::Request.new(env).params['obaServer']
     oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
