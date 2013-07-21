@@ -48,8 +48,7 @@ map '/api-docs.json' do
     oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
 
     resources = {"apis" => []}
-    resources["apis"] << {"path" => "/api-docs/obadiscovery"} if oba_server[:supportsobadiscoveryapis]
-    resources["apis"] << {"path" => "/api-docs/obarealtime"} if oba_server[:supportsobarealtimeapis]
+    resources["apis"] << {"path" => "/api-docs/where"} if oba_server[:supportsobadiscoveryapis] || oba_server[:supportsobarealtimeapis]
     resources["apis"] << {"path" => "/api-docs/siri"} if oba_server[:supportssirirealtimeapis]
 
     output = static.merge(resources)
@@ -57,44 +56,39 @@ map '/api-docs.json' do
   }
 end
 
-map '/api-docs/obadiscovery' do
+map '/api-docs/where' do
   run lambda { |env|
-    file = JSON.parse File.read('api-docs/obadiscovery')
+    where_file = JSON.parse File.read('api-docs/where')
 
     oba_server_name = Rack::Request.new(env).params['obaServer']
     oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
 
     basepath = {"basePath" => "#{ oba_server[:obabaseurl] }where"}
+    output = where_file.merge(basepath)
 
-    output = file.merge(basepath)
-    [200, {'Content-Type' => 'application/json'}, [output.to_json]]
-  }
-end
+    obadiscovery_file = JSON.parse File.read('api-docs/obadiscovery')
+    obarealtime_file = JSON.parse File.read('api-docs/obarealtime')
 
-map '/api-docs/obarealtime' do
-  run lambda { |env|
-    file = JSON.parse File.read('api-docs/obarealtime')
+    apis = []
+    apis.concat(obadiscovery_file['apis']) if oba_server[:supportsobadiscoveryapis]
+    apis.concat(obarealtime_file['apis']) if oba_server[:supportsobarealtimeapis]
 
-    oba_server_name = Rack::Request.new(env).params['obaServer']
-    oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
+    output['apis'] = apis
 
-    basepath = {"basePath" => "#{ oba_server[:obabaseurl] }where"}
-
-    output = file.merge(basepath)
     [200, {'Content-Type' => 'application/json'}, [output.to_json]]
   }
 end
 
 map '/api-docs/siri' do
   run lambda { |env|
-    file = JSON.parse File.read('api-docs/siri')
+    siri_file = JSON.parse File.read('api-docs/siri')
 
     oba_server_name = Rack::Request.new(env).params['obaServer']
     oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
 
     basepath = {"basePath" => "#{ oba_server[:siribaseurl] }siri"}
 
-    output = file.merge(basepath)
+    output = siri_file.merge(basepath)
     [200, {'Content-Type' => 'application/json'}, [output.to_json]]
   }
 end
