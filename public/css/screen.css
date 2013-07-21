@@ -1505,6 +1505,10 @@ body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operatio
     overflow-y: auto;
 }
 
+body div.footer {
+    display: none;
+}
+
 
 .model-signature {
     font-family: "Droid Sans", sans-serif;
