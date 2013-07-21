@@ -17,7 +17,7 @@ map '/proxy' do
   run lambda { |env|
     crossdomain = env['HTTP_CROSSDOMAIN']
 
-    request_line = "#{ env['REQUEST_METHOD'] } #{ env['REQUEST_PATH'].sub(/\A\/proxy\/?/, '/') } #{ env['HTTP_VERSION'] }\r\n"
+    request_line = "#{ env['REQUEST_METHOD'] } #{ env['REQUEST_URI'].sub(/\A\/proxy\/?/, '/') } #{ env['HTTP_VERSION'] }\r\n"
 
     headers = env.reject{|x| x[0..4] != 'HTTP_'}
     headers.delete('HTTP_VERSION')
