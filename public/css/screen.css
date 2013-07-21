@@ -434,13 +434,13 @@ body #header form#api_selector .input input {
 }
 
 body #header form#api_selector .input select#input_obaServer {
-    width: 400px;
+    width: 275px;
     line-height: 20px;
     padding: 5px;
 }
 
 body #header form#api_selector .input input#input_apiKey {
-    width: 200px;
+    width: 325px;
 }
 
 body #header form#api_selector .input a#explore {
