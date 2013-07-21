@@ -9,82 +9,83 @@
           "httpMethod":"GET",
           "summary":"Returns information about one, some, or all vehicles monitored by the system",
           "notes":"As much as possible, the values used both in the request and the response correspond to the values in the GTFS data",
-          "nickname":"GetVehicleMonitoring",
-          "responseClass":"VehicleMonitoring",
-          "parameters":[],
-          "errorResponses":[]
+          "nickname":"VehicleMonitoring",
+          "parameters":[
+            {
+              "name":"OperatorRef",
+              "description":"The GTFS agency ID to be monitored",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"VehicleRef",
+              "description":"The ID of the vehicle to be monitored",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"LineRef",
+              "description":"A filter by GTFS route ID",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"DirectionRef",
+              "description":"A filter by GTFS direction ID",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "allowableValues":{
+                "values":[0,1],
+                "valueType":"LIST"
+              },
+              "dataType":"int"
+            },
+            {
+              "name":"VehicleMonitoringDetailLevel",
+              "description":"Determines whether or not the response will include the stops each vehicle is going to make",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "allowableValues":{
+                "values":["normal","calls"],
+                "valueType":"LIST"
+              },
+              "dataType":"string"
+            },
+            {
+              "name":"MaximumNumberOfCallsOnwards",
+              "description":"Limit on the number of OnwardCall elements for each vehicle when VehicleMonitoringDetailLevel=calls",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"int"
+            },
+            {
+              "name":"MaximumStopVisits",
+              "description":"An upper bound on the number of buses to return in the results",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"int"
+            },
+            {
+              "name":"MinimumStopVisitsPerLine",
+              "description":"A lower bound on the number of buses to return in the results per line/route (assuming that many are available)",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"int"
+            }
+          ]
         }
       ]
     }
-  ],
-  "models":{
-    "VehicleMonitoring":{
-      "id":"VehicleMonitoring",
-      "properties":{
-        "Siri":{
-          "type":"Siri"
-        }
-      }
-    },
-    "Siri":{
-      "id":"Siri",
-      "properties":{
-        "Siri":{
-          "type":"ServiceDelivery"
-        }
-      }
-    },
-    "ServiceDelivery":{
-      "id":"ServiceDelivery",
-      "properties":{
-        "ResponseTimestamp":{
-          "type":"Date"
-        },
-        "VehicleMonitoringDelivery":{
-          "type":"Date"
-        },
-        "SituationExchangeDelivery":{
-          "type":"List",
-          "items":{
-            "$ref":"SituationExchangeDelivery"
-          }
-        }
-      }
-    },
-    "SituationExchangeDelivery":{
-      "id":"SituationExchangeDelivery",
-      "properties":{
-        "Situations":{
-          "type":"Situations"
-        }
-      }
-    },
-    "Situations":{
-      "id":"Situations",
-      "properties":{
-        "PtSituationElement":{
-          "type":"List",
-          "items":{
-            "$ref":"PtSituationElement"
-          }
-        }
-      }
-    },
-    "PtSituationElement":{
-      "id":"PtSituationElement",
-      "properties":{
-        "PublicationWindow":{
-          "type":"PublicationWindow"
-        }
-      }
-    },
-    "PublicationWindow":{
-      "id":"PublicationWindow",
-      "properties":{
-        "StartTime":{
-          "type":"Date"
-        }
-      }
-    }
-  }
+  ]
 }
