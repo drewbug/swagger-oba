@@ -71,7 +71,7 @@
     success: function(json){
       $.each(json['data']['list'],function(index, value){
         if (value['active'] == true){
-          $("#input_obaServer").append('<option>'+value['regionName']+'</option>');
+          $("#input_obaServer").append('<option value='+value['id']+'>'+value['regionName']+'</option>');
         }
       });
       $(function () {

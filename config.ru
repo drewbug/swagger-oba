@@ -36,8 +36,8 @@ map '/api-docs.json' do
   run lambda { |env|
     static = {"swaggerVersion" => "1.1"}
 
-    oba_server_name = Rack::Request.new(env).params['obaServer']
-    oba_server = OBADirectory.retrieve.find { |x| x['regionName'] == oba_server_name}
+    oba_server_id = Rack::Request.new(env).params['obaServer']
+    oba_server = OBADirectory.retrieve.find { |x| x['id'].to_s == oba_server_id}
 
     resources = {"apis" => []}
     resources["apis"] << {"path" => "/api-docs/where"} if oba_server['supportsObaDiscoveryApis'] || oba_server['supportsObaRealtimeApis']
@@ -52,8 +52,8 @@ map '/api-docs/where' do
   run lambda { |env|
     where_file = JSON.parse File.read('api-docs/where')
 
-    oba_server_name = Rack::Request.new(env).params['obaServer']
-    oba_server = OBADirectory.retrieve.find { |x| x['regionName'] == oba_server_name}
+    oba_server_id = Rack::Request.new(env).params['obaServer']
+    oba_server = OBADirectory.retrieve.find { |x| x['id'].to_s == oba_server_id}
 
     basepath = {"basePath" => "#{ oba_server['obaBaseUrl'] }api/where"}
     output = where_file.merge(basepath)
@@ -72,8 +72,8 @@ map '/api-docs/siri' do
   run lambda { |env|
     siri_file = JSON.parse File.read('api-docs/siri')
 
-    oba_server_name = Rack::Request.new(env).params['obaServer']
-    oba_server = OBADirectory.retrieve.find { |x| x['regionName'] == oba_server_name}
+    oba_server_id = Rack::Request.new(env).params['obaServer']
+    oba_server = OBADirectory.retrieve.find { |x| x['id'].to_s == oba_server_id}
 
     basepath = {"basePath" => "#{ oba_server['siriBaseUrl'] }siri"}
 
