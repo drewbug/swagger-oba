@@ -34,16 +34,22 @@ end
 
 map '/api-docs.json' do
   run lambda { |env|
-    static = {"swaggerVersion" => "1.1"}
+    static = {"swaggerVersion" => "1.1", 'apis' => []}
 
     oba_server_id = Rack::Request.new(env).params['obaServer']
     oba_server = OBADirectory.retrieve.find { |x| x['id'].to_s == oba_server_id}
 
-    resources = {"apis" => []}
-    resources["apis"] << {"path" => "/api-docs/where"} if oba_server['supportsObaDiscoveryApis'] || oba_server['supportsObaRealtimeApis']
-    resources["apis"] << {"path" => "/api-docs/siri"} if oba_server['supportsSiriRealtimeApis']
+    if oba_server['obaVersionInfo'] != ""
+      apiversion = {"apiVersion" => oba_server['obaVersionInfo']}
+    else
+      apiversion = {"apiVersion" => '???'}
+    end
 
-    output = static.merge(resources)
+    output = static.merge(apiversion)
+
+    output["apis"] << {"path" => "/api-docs/where"} if oba_server['supportsObaDiscoveryApis'] || oba_server['supportsObaRealtimeApis']
+    output["apis"] << {"path" => "/api-docs/siri"} if oba_server['supportsSiriRealtimeApis']
+
     [200, {'Content-Type' => 'application/json'}, [output.to_json]]
   }
 end
