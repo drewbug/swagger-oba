@@ -63,17 +63,14 @@ map '/api-docs/where' do
     oba_server_name = Rack::Request.new(env).params['obaServer']
     oba_server = OBADirectory.retrieve.find { |x| x[:regionname] == oba_server_name}
 
-    basepath = {"basePath" => "#{ oba_server[:obabaseurl] }where"}
+    basepath = {"basePath" => "#{ oba_server[:obabaseurl] }api/where"}
     output = where_file.merge(basepath)
 
     obadiscovery_file = JSON.parse File.read('api-docs/obadiscovery')
     obarealtime_file = JSON.parse File.read('api-docs/obarealtime')
 
-    apis = []
-    apis.concat(obadiscovery_file['apis']) if oba_server[:supportsobadiscoveryapis]
-    apis.concat(obarealtime_file['apis']) if oba_server[:supportsobarealtimeapis]
-
-    output['apis'] = apis
+    output['apis'].concat(obadiscovery_file['apis']) if oba_server[:supportsobadiscoveryapis]
+    output['apis'].concat(obarealtime_file['apis']) if oba_server[:supportsobarealtimeapis]
 
     [200, {'Content-Type' => 'application/json'}, [output.to_json]]
   }

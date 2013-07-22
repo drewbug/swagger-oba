@@ -1,6 +1,36 @@
 {
   "swaggerVersion":"1.1",
-  "resourcePath":"/where",
-  "models":{
-  }
+  "apis":[
+    {
+      "path":"/agencies-with-coverage.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns a list of all currently-supported transit agencies along with the center of their coverage area",
+          "nickname":"AgenciesWithCoverage",
+          "parameters":[]
+        }
+      ]
+    },
+    {
+      "path":"/agency/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns information for a specific transit agency",
+          "nickname":"Agencies",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the agency to be returned",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

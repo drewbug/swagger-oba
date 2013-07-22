@@ -1,6 +1,5 @@
 {
   "swaggerVersion":"1.1",
-  "resourcePath":"/siri",
   "apis":[
     {
       "path":"/vehicle-monitoring.json",
