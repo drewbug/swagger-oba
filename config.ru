@@ -21,7 +21,7 @@ map '/proxy' do
 
     headers = env.reject{|x| x[0..4] != 'HTTP_'}
     headers.delete('HTTP_VERSION')
-    headers.delete('HTTP_CROSSDOMAIN')
+    headers['HTTP_HOST'] = headers.delete('HTTP_CROSSDOMAIN')
     raw_headers = headers.map do |k, v|
       "#{k.sub(/\AHTTP_/, '')}: #{v}\r\n"
     end.join
