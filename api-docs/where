@@ -31,6 +31,313 @@
           ]
         }
       ]
+    },
+    {
+      "path":"/route-ids-for-agency/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns the list of all route IDs for a particular agency",
+          "nickname":"RouteIDsForAgency",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the agency",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/route/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns information for a specific route",
+          "nickname":"Route",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the route",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/routes-for-agency/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns the list of all routes for a particular agency",
+          "nickname":"RoutesForAgency",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the agency",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/routes-for-location.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Search for routes near a specific location",
+          "nickname":"RoutesForLocation",
+          "parameters":[
+            {
+              "name":"lat",
+              "description":"The latitude coordinate of the search center",
+              "paramType":"query",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"lon",
+              "description":"The longitude coordinate of the search center",
+              "paramType":"query",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"radius",
+              "description":"The search radius in meters",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"latSpan",
+              "description":"An alternative to radius to set the search bounding box",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"lonSpan",
+              "description":"An alternative to radius to set the search bounding box",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"query",
+              "description":"A specific route short name to search for",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/shape/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns a shape (the path traveled by a transit vehicle)",
+          "nickname":"Shape",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the shape",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/stops-ids-for-agency/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns the list of all stop IDs for a particular agency",
+          "nickname":"StopIDsForAgency",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the agency",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/stop/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns information for a specific stop",
+          "nickname":"Stop",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the stop",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/stops-for-location.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Search for stops near a specific location",
+          "nickname":"StopsForLocation",
+          "parameters":[
+            {
+              "name":"lat",
+              "description":"The latitude coordinate of the search center",
+              "paramType":"query",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"lon",
+              "description":"The longitude coordinate of the search center",
+              "paramType":"query",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"radius",
+              "description":"The search radius in meters",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"latSpan",
+              "description":"An alternative to radius to set the search bounding box",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"lonSpan",
+              "description":"An alternative to radius to set the search bounding box",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"query",
+              "description":"A specific stop code to search for",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/stops-for-route/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns the set of stops serving a particular route, including groups by direction of travel",
+          "nickname":"StopsForRoute",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the route",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"includePolylines",
+              "description":"Polyline elements included in the response?",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/schedule-for-stop/{id}.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns the full schedule for a stop on a particular day",
+          "nickname":"ScheduleForStop",
+          "parameters":[
+            {
+              "name":"id",
+              "description":"The ID of the stop",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            },
+            {
+              "name":"date",
+              "description":"The date for which a schedule is requested (of the format YYYY-MM-DD)",
+              "paramType":"query",
+              "required":false,
+              "allowMultiple":false,
+              "dataType":"Date"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path":"/current-time.json",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "summary":"Returns the current system time",
+          "nickname":"CurrentTime",
+          "parameters":[]
+        }
+      ]
     }
   ]
 }
